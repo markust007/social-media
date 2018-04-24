@@ -1,0 +1,18 @@
+header {
+  background-image: url("../media/imgHeader.png");
+  @include background();
+  position: fixed;
+  top: 0;
+  height: 101px;
+  h3 {
+    text-transform: uppercase;
+  }
+  .right-side {
+    .home {
+
+    }
+    .menu {
+
+    }
+  }
+}

@@ -1,0 +1,172 @@
+{
+    "page1": [
+        {
+            "title": "Convince Step Principles",
+            "text": "You've gained insight into your buyer’s goals and built value around a recommendation that you're sure will meet their needs. But, your customer isn't ready to commit to a sale. Don't panic! Focus on reinforcing your buyer’s trust in the value of you and your solution, and offer proof to support the claims you make about your product. This module will show you how.",
+            "button": "The Principles",
+            "description": "<h3>Key Takeaways</h3>\n<ul>\n<li>Make your buyer believe you and your recommendation</li>\n<li>What people believe strongly enough, they act upon</li>\n<li>It makes little difference what you believe is true, unless you can prove it to your buyer</li>\n<li>Buyers expect salespeople to make product or service claims, but they are impressed when someone else makes or endorses those claims</li>\n<li>As trust in you and confidence in the value you are offering rises, fear of buying disappears</li>\n</ul>",
+            "startButton": "Start!",
+            "pages": "Convince: Prove your Claims"
+        },
+        {
+            "pages": "Convince: Your Assignment"
+        },
+        {
+            "pages": "Convince: Key Takeaways"
+        }
+    ],
+    "page2": [
+        {
+            "title": "Three Options to Convince",
+            "text": "When it comes to convincing your customers, you have three options. The option you choose will depend on the barrier that you believe is keeping your customer from feeling comfortable with your solution.",
+            "prompt": "Select the buttons to learn more.",
+            "button": "Prove your Claims",
+            "description": "<ul>\n<li>Never make a claim you can't back up</li>\n<li>Whenever possible reinforce all claims visually</li>\n<li>Match your proof to your buyer's DISC style</li>\n</ul>\n"
+        },
+        {
+            "button": "Justify your Price",
+            "description": "<ul>\n<li>Present your price in between the structure of benefits</li>\n<li>Identify your offering as distinct from your competitor's to reduce comparisons</li>\n</ul>\n"
+        },
+        {
+            "button": "Relieve the Prospect's Fear of Buying",
+            "description": "<ul>\n<li>Reconcile the buying decision with the buyer's value system</li>\n<li>Enable buyers to focus on the benefits and feelings of ownership</li>\n<li>Assure your buyer of the wisdom in his or her decision to buy</li>\n<li>Think back to your customer's DISC profile - what fears might they have?</li>                               "
+        }
+    ],
+    "page3": [
+        {
+            "title": "Convince Strategy",
+            "text": "\nTo prove the value of your solution, you’ll need to offer your buyer evidence that supports the claims you’ve made. Choose the evidence that your buyer will find most convincing based on their behavioral style.  ",
+            "prompt": "Select the buyer that best fits with the evidence. There is more than one type of evidence per buyer.",
+            "button": "Daniel",
+            "description": "Short, direct messaging with a focus on benefits over details",
+            "value": 1,
+            "feedback": "Nice work! By choosing the right evidence to convince your customers, you're well on your way to closing the deal!"
+        },
+        {
+            "button": "Ingrid",
+            "description": "User testimonials",
+            "value": 2
+        },
+        {
+            "button": "Scott",
+            "description": "Demonstration of your product or service over the buyer’s current product or service",
+            "value": 3
+        },
+        {
+            "button": "Connie",
+            "description": "Academic studies",
+            "value": 4
+        },
+        {
+            "description": "Case studies with data that supports decisions",
+            "value": 4
+        },
+        {
+            "description": "Infographics, bulleted lists, comparison charts ",
+            "value": 1
+        },
+        {
+            "description": "Case studies involving well known or prestigious organizations",
+            "value": 2
+        },
+        {
+            "description": "Warranties and guarantees",
+            "value": 3
+        },
+        {
+            "description": "Messaging that emphasizes longevity and dependability",
+            "value": 3
+        },
+        {
+            "description": "White papers ",
+            "value": 4
+        },
+        {
+            "description": "Messaging with a focus on data and precise details",
+            "value": 4
+        },
+        {
+            "description": "Messaging with a focus on the success of others who have benefitted from the product or service",
+            "value": 2
+        }
+    ],
+    "page4": [
+        {
+            "title": "Your Assignment",
+            "text": "You’ve completed this module. Download your Study Guide and complete the assignment. Instructions are included on the worksheet. Once completed, click the EMAIL button to send your completed assignment to your manager.",
+            "button": "Download",
+            "instructions": "<p>Worksheet instructions:</p>\n<ol>\n<li>Think of the accounts you listed for the fundamentals assignment.</li>\n<li>Using the opportunity you've identified, decide what types of proof of claims would work best based on buyer behavior. Use this information to complete the worksheet.</li>\n</ol>\n<p>Continue to review the key takeaways and complete the module.</p>"
+        },
+        {
+            "button": "Email"
+        }
+    ],
+    "page5": [
+        {
+            "title": "Bridge to Tie-it-up",
+            "text": "Now you know how to:\n<ul>\n<li>Make your buyer believe in you and your recommendation</li>\n<li>Identify and reassure your buyer's fears</li>\n<li>Prove your claims with facts and visual references</li>\n<li>Justify the price of your offering</li>\n<li>Choose the most convincing messages for your buyer</li>\n</ul>\nSelect the button to complete the assessment. You’ll need to score at least 80% to pass this module.",
+            "button": "Assessment"
+        }
+    ],
+    "assessment": [
+        {
+            "title": "What Would You Do?",
+            "prompt": "Read each scenario and decide the best action to take for a positive IMPACT. Answer 8 out of 10 questions correctly to earn your IMPACT certification. ",
+            "id": "Question1",
+            "question": "It is a good idea to try to match the proof you are providing to back up a claim you are making with the behavior style of the buyer(s).",
+            "button1": "True",
+            "button2": "False",
+            "correctAnswer": 1,
+            "finalPassing": "Congratulations! You have passed this Knowledge Check.",
+            "finalFailing": "Sorry, you did not pass this quiz. Please review the module concepts and complete the assessment again to achieve a passing score.",
+            "buttons": "Start!"
+        },
+        {
+            "id": "Question2",
+            "question": "Demonstrating your product/service is not always enough to make a buyer want to buy; however, allowing them to experience what the product/service can do for them, can be convincing.",
+            "button1": "True",
+            "button2": "False",
+            "correctAnswer": 1,
+            "buttons": "Next"
+        },
+        {
+            "id": "Question3",
+            "question": "Most buyers will not blindly believe what any salesperson says because:",
+            "button1": "They have been misled by a salesperson in the past  ",
+            "button2": "They know the salesperson has something to gain by the transaction",
+            "button3": "They expect salespeople to make positive claims about their products, services, companies, and themselves",
+            "button4": "All of the above",
+            "correctAnswer": 4,
+            "buttons": "Finish"
+        },
+        {
+            "id": "Question4",
+            "question": "Allowing buyers to actually experience your product or service before they buy enables them to:",
+            "button1": "Try out your product for free",
+            "button2": "Slow down the sales process to avoid buying",
+            "button3": "Create a reason for not buying",
+            "button4": "Corroborate the things that you have told them",
+            "correctAnswer": 4,
+            "buttons": "Try Again"
+        },
+        {
+            "id": "Question5",
+            "question": "The strongest, most effective endorsement for a product or service usually comes from:",
+            "button1": "A representative from your organization",
+            "button2": "An individual your prospect knows personally and trusts",
+            "button3": "You, the salesperson",
+            "button4": "A popular celebrity",
+            "correctAnswer": 2,
+            "buttons": "Print Certificate"
+        },
+        {
+            "id": "Question6",
+            "question": "The real purpose of the Convince Step in IMPACT is:",
+            "button1": "To enhance the buyer’s belief in your product or service claims",
+            "button2": "To let the buyer think ",
+            "button3": "To make the word \"IMPACT\"",
+            "button4": "All of the above",
+            "correctAnswer": 1
+        }
+    ]
+}

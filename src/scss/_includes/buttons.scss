@@ -1,0 +1,39 @@
+button {
+  background: transparent;
+  border: 0;
+  transition: all .3s;
+  &:hover {
+
+  }
+  &:active {
+    outline: none;
+  }
+  &:focus {
+    outline:none;
+  }
+  &.disable {
+    cursor: default;
+    pointer-events: none;
+  }
+}
+.button {
+
+  &:active {
+
+  }
+  &:focus {
+
+  }
+  &:hover {
+
+  }
+  &.disable {
+
+  }
+  &.correct {
+
+  }
+  &.incorrect {
+
+  }
+}
