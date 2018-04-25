@@ -1,8 +1,9 @@
 <template>
   <section id="container">
 
-    <Auth :comments="comments" @getUser="getUser" @addUser="addUser" :signedIn="signedIn = true" v-show="!signedIn"></Auth>
+    <Auth :comments="comments" @getUser="getUser" @addUser="addUser" @signedIn="signedIn = true" v-show="!signedIn"></Auth>
     <Comment :comments="comments" :newMessage="newMessage" @addComment="addComment" v-show="signedIn"></Comment>
+    <Wish :wishlist="wishlist"></Wish>
 
   </section>
 </template>
@@ -10,13 +11,14 @@
 <script>
 import Auth from './components/Auth.vue'
 import Comment from './components/Comments.vue'
+import Wish from './components/Wishlist.vue'
 
 // import {config, app, users, comments, fs} from '../config'
 
 import firebase from 'firebase'
 import 'Firebase/firestore'
 
-let config = {
+const config = {
   apiKey: "AIzaSyBTbP9rVzz37B5ZDNYm0YoqRRsFxoVqGfM",
     authDomain: "family-social-5026d.firebaseapp.com",
     databaseURL: "https://family-social-5026d.firebaseio.com",
@@ -28,6 +30,7 @@ let config = {
 let app = firebase.initializeApp(config)
 let users = app.database().ref('users')
 let comments = app.database().ref('comments')
+let wishlist = app.database().ref('wishlist')
 let fs = firebase.firestore(app)
 
   export default {
@@ -42,7 +45,8 @@ let fs = firebase.firestore(app)
       }
     },
     firebase: {
-      comments: comments
+      comments: comments,
+      wishlist: wishlist
    },
     computed: {
       email () {
@@ -149,7 +153,7 @@ let fs = firebase.firestore(app)
             console.log(this.date)
     },
     components: {
-      Auth, Comment
+      Auth, Comment, Wish
     },
     props: []
   }

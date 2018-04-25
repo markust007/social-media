@@ -8,11 +8,10 @@
       <p>Sign In</p>
       <form>
         <p>Email:</p>
-        <input type="email" v-model="email" />
+        <input type="email" v-model="email" required />
         <p>Password:</p>
-        <input type="text" v-model="password" />
+        <input type="text" v-model="password" required />
         <p>Your Name:</p>
-        <input type="text" v-model="name" />
         <input type="submit" value="Sign In" @click.prevent="toggleSignIn">
       </form>
     </div>
@@ -21,11 +20,11 @@
       <p>Sign Up</p>
       <form>
         <p>Email:</p>
-        <input type="email" v-model="email" />
+        <input type="email" v-model="email" required />
         <p>Password:</p>
-        <input type="text" v-model="password" />
+        <input type="text" v-model="password" required />
         <p>Your Name:</p>
-        <input type="text" v-model="name" />
+        <input type="text" v-model="name" required />
         <input type="submit" value="Sign Up" @click.prevent="handleSignUp">
       </form>
     </div>
@@ -83,7 +82,7 @@ export default {
         var $email = this.email
         var $password = this.password
         var $name = this.name
-        console.log('first 2')
+
         if ($email.length < 4) {
           alert('Please enter an email address.');
           return;
@@ -92,12 +91,12 @@ export default {
           alert('Please enter a password.');
           return;
         }
-        console.log('second')
+
         // Sign in with email and pass.
         // [START authwithemail]
         firebase.auth().signInWithEmailAndPassword($email, $password)
         .then(() => {
-          alert('signed in!')
+
           console.log('third')
           this.currentUser()
         })
@@ -227,5 +226,24 @@ export default {
   border-bottom: 1px solid #555;
   border-left: 1px solid #555;
   border-right: 1px solid #555;
+}
+input[type="text"] {
+  background: #fff;
+  width: 100%;
+  padding: 10px;
+}
+input[type="email"] {
+  background: #fff;
+  width: 100%;
+  padding: 10px;
+}
+input[type="submit"] {
+  padding: 10px 20px;
+  border-radius: 5px;
+  background: lightblue;
+  text-transform: uppercase;
+  display: block;
+  margin: 10px auto 0;
+  font-size: 1.1rem;
 }
 </style>

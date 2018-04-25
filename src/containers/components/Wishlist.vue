@@ -1,6 +1,13 @@
 <template>
-  <section id="dashboard">
-    
+  <section id="wishlist">
+    <div v-for="(item, index) in wishlist">
+      <p>Wishlist is for: {{item.for}}</p>
+      <ul>
+        <li v-for="(gift, id) in item.items">
+          <p>{{gift}}</p>
+        </li>
+      </ul>
+    </div>
   </section>
 </template>
 
@@ -25,7 +32,7 @@ export default {
     }, 500);
   },
   components: {},
-  props: []
+  props: ['wishlist']
 };
 </script>
 
