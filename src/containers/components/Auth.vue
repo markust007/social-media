@@ -33,6 +33,7 @@
 
 <script>
 import firebase from 'firebase'
+import { config, app, users, comments, wishlist, fs, timestamp } from '../../util/config'
 
 export default {
   data() {
@@ -48,9 +49,63 @@ export default {
     storeEmail () {
       return this.$store.state.email
     },
+    date() {
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      const d = new Date();
+      // const month = monthNames[d.getMonth()];
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const year = d.getFullYear();
+      const hours = d.getHours();
+      let hour;
+      let postfix;
+      if (hours > 12) {
+        hour = hours - 12
+        postfix = "p.m."
+      } else {
+        hour = hours
+        postfix = "a.m."
+      }
+      // hours > 12 ? hour = hours - 12 : hour = hours
+      const min = d.getMinutes();
+      const fulldate = month + "/" + day + "/" + year + " at " + hour + ":" + min + postfix;
+      return fulldate
+    }
   },
 
   methods: {
+    getUser() {
+      setTimeout(() => {
+        let self = this
+        let $index = this.storeEmail.indexOf("@")
+        let $name = this.storeEmail.slice(0, $index);
+        let docRef = fs.collection("users").doc("" + $name + "");
+        docRef.get().then(function(doc) {
+            if (doc.exists) {
+                self.$store.commit('updateName', doc.data().name)
+            } else {
+                console.log("No such document!");
+            }
+        }).catch(function(error) {
+            console.log("Error getting document:", error);
+        });
+      }, 150);
+    },
+    addUser() {
+      setTimeout(() => {
+        let $index = this.email.indexOf("@")
+        console.log($index)
+        let $name = this.email.slice(0, $index);
+        console.log($name)
+        fs.collection("users").doc($name).set({
+          name: this.name,
+          handle: $name,
+          created: this.date
+        })
+      }, 150);
+    },
     currentUser() {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
@@ -58,7 +113,7 @@ export default {
           this.$emit('signedIn');
           this.$store.commit("updateName", this.name);
           this.$store.commit("updateEmail", user.email);
-          this.$emit('getUser')
+          this.getUser();
           // var displayName = user.displayName;
           // var email = user.email;
           // var emailVerified = user.emailVerified;
@@ -137,7 +192,7 @@ export default {
       .then(() => {
         alert('new user!'),
         this.$store.commit('updateName', self.name),
-        self.$emit('addUser')
+        this.addUser();
       })
       .catch(function(error) {
         // Handle Errors here.
@@ -162,6 +217,8 @@ export default {
         // [START_EXCLUDE]
         alert('Email Verification Sent!');
         // [END_EXCLUDE]
+      }).catch(function(error) {
+          console.log(error);
       });
       // [END sendemailverification]
     },

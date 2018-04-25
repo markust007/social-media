@@ -1,7 +1,7 @@
-import Firebase from 'Firebase'
+import firebase from 'Firebase'
 import 'Firebase/firestore'
 
-let config = {
+const config = {
   apiKey: "AIzaSyBTbP9rVzz37B5ZDNYm0YoqRRsFxoVqGfM",
     authDomain: "family-social-5026d.firebaseapp.com",
     databaseURL: "https://family-social-5026d.firebaseio.com",
@@ -10,11 +10,11 @@ let config = {
     messagingSenderId: "697955346223"
 }
 
-let app = Firebase.initializeApp(config)
+let app = firebase.initializeApp(config)
 let users = app.database().ref('users')
 let comments = app.database().ref('comments')
-let fs = Firebase.firestore()
+let wishlist = app.database().ref('wishlist')
+let fs = firebase.firestore(app)
+let timestamp = new Date().getTime();
 
-export default {
-  namespaced: true, config, users, comments, fs
-}
+export { config, app, users, comments, wishlist, fs, timestamp };
