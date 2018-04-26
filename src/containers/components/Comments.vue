@@ -3,7 +3,7 @@
     <ul>
       <li v-for="(comment, index) in comments">
         <div class="user">
-          <i class="fa fa-user" aria-hidden="true"></i>
+          <i class="fas fa-user"></i>
         </div>
         <div class="message">
           <p class="person">{{comment.person}}</p>

@@ -111,7 +111,7 @@ export default {
         if (user) {
           alert(user.email)
           this.$emit('signedIn');
-          this.$store.commit("updateName", this.name);
+          this.$store.commit("updateName", user.displayName);
           this.$store.commit("updateEmail", user.email);
           this.getUser();
           // var displayName = user.displayName;

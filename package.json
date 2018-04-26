@@ -9,6 +9,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "firebase": "^4.8.1",
+    "linkifyjs": "^2.1.6",
     "mobile-drag-drop": "^2.2.0",
     "uuid": "^3.2.1",
     "vue": "^2.5.16",
