@@ -13,17 +13,17 @@
       <!-- <button @click="">Save</button> -->
       <hr />
     </div>
-    <button @click="newList">New List</button>
-    <div>
+    <button @click="createList">Create New List</button>
+    <div v-show="newList">
       <p>For:</p>
-      <input type="text" v-model="listFor" />
+      <input type="text" v-model="newItems.for" />
       <ul>
-        <li v-for="(item, index) in newItems">
-          <input type="text" v-model="items[index]" />
+        <li v-for="(item, index) in items">
+          <input type="text" v-model="newItems.items[index]" />
         </li>
       </ul>
-      <button @click="editList">Edit List</button>
-      <button @click="saveList">Save</button>
+      <!-- <button @click="editList">Edit List</button> -->
+      <button @click="pushList">Save</button>
       <hr />
     </div>
   </section>
@@ -36,16 +36,22 @@ export default {
     return {
       sign: true,
       listFor: "",
-      items: [],
-      newItems: [
-        "Thing 1", "Thing 2"
-      ],
+      newList: false,
+      items: ["Edit Item"],
+      newItems: {
+        created: "",
+        for: "",
+        items: ["Edit Item"]
+      },
+      editItems: [],
       key: null
     };
   },
 
   computed: {
-
+    name () {
+      return this.$store.state.name
+    }
   },
 
   methods: {
@@ -68,14 +74,25 @@ export default {
       //   deleteComment(postElement, data.key);
       // });
     },
-    newList() {
-      let pushList = wishlist.push({
-        created: "Christopher",
-        for: "Mark",
-        items: {}
-      });
+    createList() {
+      this.newList = true
+      this.newItems.created = this.name
+    },
+    pushList() {
+      // let pushList = wishlist.push({
+      //   created: this.name,
+      //   for: "",
+      //   items: []
+      // });
+      let pushList = wishlist.push(this.newItems);
       this.key = pushList.key
       console.log(pushList.key)
+      this.newList = false
+      this.newItems = {
+        created: "",
+        for: "",
+        items: ["Edit Item"]
+      }
       return pushList
     },
     editList() {
@@ -89,24 +106,30 @@ export default {
       VALUES.forEach((val) => {
         this.key = val; //GOT the key here
       })
+      wishlist.child("" + this.key + "").once('value').then((snapshot) => {
+        console.log(snapshot.val());
+        this.editItems = snapshot.val();
+      });
+      // console.log(this.key)
       // wishlist.once("value", function (snap) {
       //  console.log(snap.key) //logs wishlist
       // });
-      wishlist.once('value').then((snapshot) => {
-        console.log(snapshot.key) //logs wishlist
-        snapshot.forEach((childSnap) => {
-          console.log('user', childSnap.key, childSnap.val());
-          const FINAL = childSnap.key
-          if(FINAL == this.key) {
-            let theKey = FINAL //GOT the key here
-            console.log(theKey)
-          } else {
-            console.log('false')
-          }
-         });
-        // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-        // ...
-      });
+      // wishlist.once('value').then((snapshot) => {
+      //   console.log(snapshot.key) //logs wishlist
+      //   snapshot.forEach((childSnap) => {
+      //     console.log('user', childSnap.key, childSnap.val());
+      //     const FINAL = childSnap.key
+      //     if(FINAL == this.key) {
+      //       let theKey = FINAL //GOT the key here
+      //       // this.key = theKey
+      //       console.log(theKey)
+      //     } else {
+      //       console.log('false')
+      //     }
+      //    });
+      //   // var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+      //   // ...
+      // });
     },
     saveList() {
       // let key = this.key
