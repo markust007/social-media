@@ -5,7 +5,7 @@ import Vuetify from 'vuetify'
 // import 'vuetify/dist/vuetify.min.css'
 require('./scss/styles.scss')
 
-Vue.use(Vuetify)
+// Vue.use(Vuetify)
 Vue.use(VueFire)
 
 new Vue({

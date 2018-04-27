@@ -11,7 +11,6 @@
         <input type="email" v-model="email" required />
         <p>Password:</p>
         <input type="text" v-model="password" required />
-        <p>Your Name:</p>
         <input type="submit" value="Sign In" @click.prevent="toggleSignIn">
       </form>
     </div>

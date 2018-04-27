@@ -108,7 +108,7 @@ ul {
       margin-right: 10px;
       i {
         margin-top: 4px;
-        font-size: 1.7rem;
+        font-size: 1.8rem;
         color: #fff;
       }
     }
@@ -116,17 +116,17 @@ ul {
       flex: 1;
       .person {
         display: inline-block;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
         color: lightblue;
         font-weight: 600;
       }
       .date {
         color: #ccc;
         display: inline-block;
-        font-size: 0.8rem;
+        font-size: 0.9rem;
       }
       .comment {
-        font-size: 1.10rem;
+        font-size: 1.2rem;
         margin-top: 3px;
       }
     }
@@ -148,6 +148,7 @@ ul {
     display: block;
     margin: 10px auto 0;
     font-size: 1.1rem;
+    border: 0;
   }
 }
 </style>

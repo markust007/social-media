@@ -81,6 +81,6 @@ export default {
 }
 </script>
 
-<style src='vuetify/dist/vuetify.min.css'>
+<style>
     /* global styles */
 </style>

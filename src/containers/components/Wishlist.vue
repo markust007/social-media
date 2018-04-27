@@ -5,6 +5,8 @@
       <ul>
         <li v-for="(item, index) in wishlist" @click="select(item)">
           <p class="wish-for">{{item.for}}</p>
+          <p class="created-by">Created by: {{item.created}}</p>
+          <p class="created-date">on: {{item.date}}</p>
         </li>
       </ul>
     </div>
@@ -342,6 +344,8 @@ export default {
   h3 {
     background: rgba(0,0,0,0.1);
     padding: 10px;
+    font-size: 1.25rem;
+    margin: 0;
   }
   ul {
     list-style-type: none;
@@ -352,7 +356,27 @@ export default {
       border-top: 1px solid #ccc;
       cursor: pointer;
       p {
-        margin: 0
+        margin: 0;
+        &.wish-for {
+          color: darken(lightblue, 20%);
+          font-weight: 600;
+          font-size: 1.2rem;
+        }
+        &.created-by {
+          font-size: 0.8rem;
+          color: #666;
+          text-transform: uppercase;
+        }
+        &.created-date {
+          font-size: 0.9rem;
+          color: #999;
+        }
+      }
+      &.created-by {
+
+      }
+      &.created-date {
+
       }
     }
   }
