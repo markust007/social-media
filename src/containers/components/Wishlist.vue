@@ -1,26 +1,31 @@
 <template>
   <section id="wishlist">
-    <transition-group
-      name="custom-classes-transition"
-      enter-active-class="animated flipInX"
-    >
-      <div class="wishlist" v-for="(item, index) in wishlist" v-show="!editList" :key="index">
-        <div v-show="item.created == name">
-          <button class="edit" @click="editThisList(item)"><i class="fas fa-edit"></i> Edit List</button>
-          <button class="edit" @click="deleteList(item)"><i class="fas fa-trash-alt"></i> Delete List</button>
+    <div class="list-items" v-show="!showList">
+      <h3 class="title">Lists</h3>
+      <ul>
+        <li v-for="(item, index) in wishlist" @click="select(item)">
+          <p class="wish-for">{{item.for}}</p>
+        </li>
+      </ul>
+    </div>
+
+      <div class="wishlist" v-show="!editList && showList">
+        <div v-show="mainItems.created == name">
+          <button class="edit" @click="backtoLists"><i class="fas fa-caret-square-left"></i> Back</button>
+          <button class="edit" @click="editThisList"><i class="fas fa-edit"></i> Edit List</button>
+          <button class="edit" @click="deleteList"><i class="fas fa-trash-alt"></i> Delete List</button>
         </div>
-        <p class="wish-for">Wishlist is for: {{item.for}}</p>
+        <p class="wish-for">Wishlist is for: {{mainItems.for}}</p>
         <ul>
-          <li v-for="(gift, id) in item.items">
-            <p>{{gift}}</p>
-            <!-- <button class="make-strike" @click="strike(index)">Got</button> -->
+          <li v-for="(item, index) in mainItems.items">
+            <p :class="{strike: got[index]}">{{item.item}}</p>
+            <button class="make-strike" @click="strike(index)">Got</button>
           </li>
         </ul>
       </div>
-    </transition-group>
 
-    <button class="new-list" @click="createList" v-show="!editList">Create New List</button>
-    <button class="new-list close"@click="closeNewList" v-show="newList && !editList"><i class="fas fa-times"></i></button>
+    <button class="new-list" @click="createList" v-show="!editList && !showList">Create New List</button>
+    <button class="new-list close"@click="closeNewList" v-show="newList && !editList && !showList"><i class="fas fa-times"></i></button>
 
     <!-- WISHLIST NEW-->
     <transition
@@ -28,12 +33,12 @@
       enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
     >
-      <div class="wishlist new" v-show="newList && !editList">
+      <div class="wishlist new" v-show="newList && !editList && !showList">
         <p>For:</p>
         <input type="text" v-model="newItems.for" />
         <ul>
           <li v-for="(item, index) in items">
-            <input type="text" v-model="items[index]" />
+            <input type="text" v-model="items[index].item" />
           </li>
         </ul>
         <button @click="addItem" class="add-item" :class="{disabled: items[items.length - 1] == ''}"><i class="fas fa-plus-square"></i> Add Item</button>
@@ -52,7 +57,7 @@
         <input type="text" v-model="editItems.for" />
         <ul>
           <li v-for="(item, index) in editItems.items">
-            <input type="text" v-model="editItems.items[index]" />
+            <input type="text" v-model="editItems.items[index].item" />
           </li>
         </ul>
         <button @click="editItemsAdd" class="add-item" :class="{disabled: editItems.items[editItems.items.length - 1] == ''}"><i class="fas fa-plus-square"></i> Add Item</button>
@@ -86,14 +91,18 @@ export default {
       listFor: "",
       newList: false,
       editList: false,
+      showList: false,
       modal: false,
-      items: ["Edit Item"],
+      items: [{"item": "Edit Item", "got": false}],
       newItems: {
         created: "",
         for: "",
-        items: ["Edit Item"]
+        date: "",
+        items: [{"item": "Edit Item", "got": false}]
       },
-      editItems: [],
+      editItems: [{}],
+      mainItems: [{}],
+      got: [],
       key: null
     };
   },
@@ -101,6 +110,30 @@ export default {
   computed: {
     name () {
       return this.$store.state.name
+    },
+    date() {
+      const monthNames = ["January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+      ];
+      const d = new Date();
+      // const month = monthNames[d.getMonth()];
+      const month = d.getMonth() + 1;
+      const day = d.getDate();
+      const year = d.getFullYear();
+      const hours = d.getHours();
+      let hour;
+      let postfix;
+      if (hours > 12) {
+        hour = hours - 12
+        postfix = "p.m."
+      } else {
+        hour = hours
+        postfix = "a.m."
+      }
+      // hours > 12 ? hour = hours - 12 : hour = hours
+      const min = d.getMinutes();
+      const fulldate = month + "/" + day + "/" + year + " at " + hour + ":" + min + " " + postfix;
+      return fulldate
     }
   },
 
@@ -119,62 +152,106 @@ export default {
       //  console.log(‘one of these updates failed’, err);
       // });
     },
+    gone(num) {
+      wishlist.child("" + this.key + "").child("items").child("" + num + "").child("got").on('value').then((snapshot) => {
+        let value = snapshot.val();
+        if(value == true || value == "true") {
+          return true
+        } else {
+        return false
+        }
+      });
+    },
+    backtoLists() {
+      this.showList = false
+      this.mainItems = [{}]
+    },
+    select(num) {
+      this.got = []
+      const VALUES = Object.values(num)
+      VALUES.forEach((val) => {
+        this.key = val; //GOT the key here
+      });
+      wishlist.child("" + this.key + "").once('value').then((snapshot) => {
+        console.log(snapshot.val());
+        this.mainItems = snapshot.val();
+        console.log(snapshot.child("items").val())
+        let items = snapshot.child("items").val()
+        for (let i = 0; i < items.length; i++) {
+            // console.log(snapshot.child("items").child(i).child("got").val())
+            this.got.push(snapshot.child("items").child(i).child("got").val())
+        }
+        snapshot.forEach((snap) => {
+          console.log(snap.val())
+          console.log(snap.child("got").val())
+        });
+      });
+      this.showList = true
+    },
     deleteList(num) {
       // wishlist.on('child_removed', function(data) {
       //   deleteComment(postElement, data.key);
       // });
-      const VALUES = Object.values(num)
-      VALUES.forEach((val) => {
-        this.key = val; //GOT the key here
-      })
+      // const VALUES = Object.values(num)
+      // VALUES.forEach((val) => {
+      //   this.key = val; //GOT the key here
+      // })
       this.modal = true
     },
     strike(num) {
-      const VALUES = Object.values(num)
-      VALUES.forEach((val) => {
-        this.key = val; //GOT the key here
-      })
+      // const VALUES = Object.values(num)
+      // VALUES.forEach((val) => {
+      //   this.key = val; //GOT the key here
+      // })
       // event.target.previousElementSibling.classList.toggle("strike");
-      wishlist.child("" + this.key + "").child("items").child("" + num + "").child("1").once('value').then((snapshot) => {
+      wishlist.child("" + this.key + "").child("items").child("" + num + "").child("got").once('value').then((snapshot) => {
         let value = snapshot.val();
-        if(value) {
-          wishlist.child("" + this.key + "").child("items").child("" + num + "").child("1").set(false);
+        if(value == true || value == "true") {
+          wishlist.child("" + this.key + "").child("items").child("" + num + "").child("got").set(false);
         } else {
-          wishlist.child("" + this.key + "").child("items").child("" + num + "").child("1").set(true);
+          wishlist.child("" + this.key + "").child("items").child("" + num + "").child("got").set(true);
         }
-      })
+        this.got[num] = !snapshot.val();
+      });
+      this.$forceUpdate();
     },
     yesModal() {
       wishlist.child("" + this.key + "").remove();
       this.modal = false
+      this.showList = false
+      this.mainItems = [{}]
     },
     noModal() {
       this.modal = false
     },
     addItem() {
-      this.items.push("");
+      this.items.push({"item": "", "got": false});
       this.$forceUpdate();
     },
     editItemsAdd() {
-      this.editItems.items.push("")
+      this.editItems.items.push({"item": "", "got": false})
       // this.editItemsGifts.push("New Item");
+      this.got.push(false);
       this.$forceUpdate();
     },
     saveEditList() {
       wishlist.child(this.key).set(this.editItems);
+      this.mainItems = this.editItems
       this.editList = false
     },
     createList() {
       this.newList = true
       this.newItems.created = this.name
+      this.newItems.date = this.date
     },
     closeNewList() {
       this.newList = false
-      this.items = ["Edit Item"],
+      this.items = [{"item": "Edit Item", "got": false}],
       this.newItems = {
         created: "",
         for: "",
-        items: ["Edit Item"]
+        date: "",
+        items: [{"item": "Edit Item", "got": false}]
       }
     },
     pushList() {
@@ -190,9 +267,10 @@ export default {
       this.newItems = {
         created: "",
         for: "",
-        items: ["Edit Item"]
+        date: "",
+        items: [{"item": "Edit Item", "got": false}]
       }
-      this.items = ["Edit Item"]
+      this.items = [{"item": "Edit Item", "got": false}]
       return pushList
     },
     // editList() {
@@ -203,10 +281,10 @@ export default {
     // },
     editThisList(num) {
       this.editList = true
-      const VALUES = Object.values(num)
-      VALUES.forEach((val) => {
-        this.key = val; //GOT the key here
-      })
+      // const VALUES = Object.values(num)
+      // VALUES.forEach((val) => {
+      //   this.key = val; //GOT the key here
+      // })
       wishlist.child("" + this.key + "").once('value').then((snapshot) => {
         console.log(snapshot.val());
         this.editItems = snapshot.val();
@@ -256,6 +334,29 @@ export default {
 #wishlist {
   margin: 1% 0;
 }
+.list-items {
+  background: #fff;
+  border: 1px solid #ccc;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  h3 {
+    background: rgba(0,0,0,0.1);
+    padding: 10px;
+  }
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    li {
+      padding: 10px;
+      border-top: 1px solid #ccc;
+      cursor: pointer;
+      p {
+        margin: 0
+      }
+    }
+  }
+}
 .edit, .save {
   background: #ccc;
   padding: 5px;
@@ -267,7 +368,7 @@ export default {
   background: lightblue;
   text-transform: uppercase;
   display: inline-block;
-  margin: 10px auto 0;
+  margin: 0 auto;
   font-size: 1.1rem;
   &.close {
     color: #fff;
