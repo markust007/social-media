@@ -89,6 +89,7 @@ export default {
 <style scoped lang="scss">
 ul {
   list-style-type: none;
+  padding: 0;
   li {
     width: 100%;
     margin: 5px 0;
@@ -117,7 +118,7 @@ ul {
       .person {
         display: inline-block;
         font-size: 0.9rem;
-        color: lightblue;
+        color: darken(lightblue, 20%);
         font-weight: 600;
       }
       .date {
@@ -143,7 +144,8 @@ ul {
   input[type="submit"] {
     padding: 10px 20px;
     border-radius: 5px;
-    background: lightblue;
+    background: darken(lightblue, 20%);
+    color: #fff;
     text-transform: uppercase;
     display: block;
     margin: 10px auto 0;

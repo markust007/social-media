@@ -11,40 +11,48 @@
       </ul>
     </div>
 
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated fadeIn"
+    >
       <div class="wishlist" v-show="!editList && showList">
-        <div v-show="mainItems.created == name">
-          <button class="edit" @click="backtoLists"><i class="fas fa-caret-square-left"></i> Back</button>
-          <button class="edit" @click="editThisList"><i class="fas fa-edit"></i> Edit List</button>
-          <button class="edit" @click="deleteList"><i class="fas fa-trash-alt"></i> Delete List</button>
+        <div class="top">
+          <button class="edit" @click="backtoLists"><i class="fas fa-arrow-left"></i></button>
+          <div v-show="mainItems.created == name" class="edit-trash">
+            <button class="edit" @click="editThisList"><i class="fas fa-edit"></i></button>
+            <button class="edit" @click="deleteList"><i class="fas fa-trash-alt"></i></button>
+          </div>
+          <p class="title">{{mainItems.for}}</p>
         </div>
-        <p class="wish-for">Wishlist is for: {{mainItems.for}}</p>
         <ul>
-          <li v-for="(item, index) in mainItems.items">
+          <li v-for="(item, index) in mainItems.items" @click="strike(index)">
+            <div class="make-strike" :class="{strike: got[index]}"><i class="fas fa-check animated flipInY" v-show="got[index]"></i></div>
             <p :class="{strike: got[index]}">{{item.item}}</p>
-            <button class="make-strike" @click="strike(index)">Got</button>
           </li>
         </ul>
       </div>
+    </transition>
 
-    <button class="new-list" @click="createList" v-show="!editList && !showList">Create New List</button>
-    <button class="new-list close"@click="closeNewList" v-show="newList && !editList && !showList"><i class="fas fa-times"></i></button>
+    <button class="new-list" :class="{close: newList}"@click="createList" v-show="!editList && !showList"><i class="fas fa-plus"></i></button>
 
     <!-- WISHLIST NEW-->
     <transition
       name="custom-classes-transition"
-      enter-active-class="animated fadeIn"
+      enter-active-class="animated"
       leave-active-class="animated fadeOut"
     >
       <div class="wishlist new" v-show="newList && !editList && !showList">
-        <p>For:</p>
-        <input type="text" v-model="newItems.for" />
+        <p>Title:</p>
+        <input type="text" v-model="newItems.for" class="title" />
         <ul>
           <li v-for="(item, index) in items">
             <input type="text" v-model="items[index].item" />
           </li>
         </ul>
-        <button @click="addItem" class="add-item" :class="{disabled: items[items.length - 1] == ''}"><i class="fas fa-plus-square"></i> Add Item</button>
-        <button class="save" @click="pushList">Save</button>
+        <div class="buttons">
+          <button @click="addItem" class="edit"><i class="fas fa-plus-square"></i></button>
+          <button class="edit" @click="pushList"><i class="fas fa-save"></i></button>
+        </div>
       </div>
     </transition>
 
@@ -52,18 +60,19 @@
     <transition
       name="custom-classes-transition"
       enter-active-class="animated fadeIn"
-      leave-active-class="animated fadeOut"
     >
-      <div class="wishlist edit" v-if="editList">
-        <p>For:</p>
-        <input type="text" v-model="editItems.for" />
+      <div class="wishlist editlist" v-if="editList">
+        <p>Title:</p>
+        <input type="text" v-model="editItems.for" class="title" />
         <ul>
           <li v-for="(item, index) in editItems.items">
             <input type="text" v-model="editItems.items[index].item" />
           </li>
         </ul>
-        <button @click="editItemsAdd" class="add-item" :class="{disabled: editItems.items[editItems.items.length - 1] == ''}"><i class="fas fa-plus-square"></i> Add Item</button>
-        <button class="save" @click="saveEditList">Save</button>
+        <div class="buttons">
+          <button @click="editItemsAdd" class="edit"><i class="fas fa-plus-square"></i></button>
+          <button class="edit" @click="saveEditList"><i class="fas fa-save"></i></button>
+        </div>
       </div>
     </transition>
 
@@ -242,9 +251,13 @@ export default {
       this.editList = false
     },
     createList() {
-      this.newList = true
-      this.newItems.created = this.name
-      this.newItems.date = this.date
+      if(this.newList) {
+        this.closeNewList();
+      } else {
+        this.newList = true
+        this.newItems.created = this.name
+        this.newItems.date = this.date
+      }
     },
     closeNewList() {
       this.newList = false
@@ -381,23 +394,37 @@ export default {
     }
   }
 }
-.edit, .save {
+.edit {
+  padding: 5px;
+  border-radius: 50%;
+  background: darken(lightblue, 20%);
+  color: #fff;
+  font-size: 1rem;
+  width: 25px;
+  height: 25px;
+  margin-right: 5px;
+}
+.save {
   background: #ccc;
   padding: 5px;
   border-radius: 2px;
 }
 .new-list {
-  padding: 10px 20px;
-  border-radius: 5px;
-  background: lightblue;
-  text-transform: uppercase;
-  display: inline-block;
-  margin: 0 auto;
-  font-size: 1.1rem;
+  padding: 5px;
+  border-radius: 50%;
+  background: darken(lightblue, 20%);
+  color: #fff;
+  font-size: 1.8rem;
+  width: 45px;
+  height: 45px;
+  margin-right: 5px;
+  margin: 10px auto 0;
+  display: block;
+  z-index: 99;
   &.close {
     color: #fff;
     background: red;
-    display: inline-block;
+    transform: rotate(45deg);
   }
 }
 .add-item {
@@ -413,47 +440,94 @@ export default {
 .wishlist {
   background: white;
   margin-bottom: 10px;
-  padding: 10px;
-  .wish-for {
-    margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  .top {
+    background: rgba(0,0,0,0.1);
+    padding: 10px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    .edit-trash {
+      display: inline-block;
+    }
+    .title {
+      margin: 5px 0;
+      color: darken(lightblue, 20%);
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
   }
   ul {
     list-style-type: none;
-    padding: 0;
+    padding: 10px;
+    margin: 0;
     li {
-      border-top: 1px solid #ccc;
-      padding: 5px;
+      border-bottom: 1px solid #ccc;
+      padding: 10px 5px;
+      cursor: pointer;
       &:last-child {
-        border-bottom: 1px solid #ccc;
+        border-bottom: 0px solid #ccc;
         margin-bottom: 5px;
+      }
+      .make-strike {
+        float: left;
+        font-size: 0.8rem;
+        background: #fff;
+        border: 1px solid #ccc;
+        width: 10px;
+        height: 10px;
+        color: #fff;
+        padding: 3px;
+        border-radius: 50%;
+        text-transform: uppercase;
+        text-align: center;
+        &.strike {
+          background: darken(lightblue, 20%);
+          border: 1px solid darken(lightblue, 20%);
+        }
       }
       p {
         display: inline-block;
         margin: 0;
+        vertical-align: middle;
+        padding-left: 8px;
+        transition: all .3s;
         &.strike {
           text-decoration: line-through;
+          color: #ccc;
         }
-      }
-      .make-strike {
-        float: right;
-        font-size: 0.7rem;
-        background: #555;
-        color: #fff;
-        padding: 3px;
-        border-radius: 2px;
-        text-transform: uppercase;
       }
     }
   }
-  &.new, .edit {
+  &.new {
+    margin-top: -18px;
+  }
+  &.new, &.editlist {
     p {
       margin: 0;
-      display: inline-block;
+      padding: 10px 10px 4px 10px;
+      text-transform: uppercase;
+      color: #666;
+    }
+    .title {
+      display: block;
+      color: darken(lightblue, 20%);
+      font-weight: 600;
+      font-size: 1.5rem;
+      border-bottom: 1px solid darken(lightblue, 20%);
     }
     input {
-      display: inline-block;
-      background-color: #ddd;
-      padding: 5px;
+      display: block;
+      background-color: #eeeeee;
+      width: calc(100% - 20px);
+      padding: 8px 10px;
+      color: #444;
+    }
+    ul {
+      padding: 10px 10px 0;
+    }
+    .buttons {
+      padding: 0 15px 10px;
     }
   }
 }
