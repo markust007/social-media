@@ -13,6 +13,7 @@
 /////////////////////VARIABLES & IMPORTS////////////////////
 //////////////////////////////////////////////////////////
 import store from './store/index'
+import router from './router'
 
 import axios from 'axios';
 
@@ -37,6 +38,7 @@ polyfill({
 export default {
   name: 'app',
   store,
+  router,
   data () {
     return {
       loader: true

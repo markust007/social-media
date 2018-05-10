@@ -3,7 +3,8 @@
     <ul>
       <li v-for="(comment, index) in comments">
         <div class="user">
-          <i class="fas fa-user"></i>
+          <!-- <i class="fas fa-user"></i> -->
+          <p>{{comment.initials}}</p>
         </div>
         <div class="message">
           <p class="person">{{comment.person}}</p>
@@ -38,6 +39,9 @@ export default {
     commentsLength() {
       return this.comments.length + 1
     },
+    initials() {
+      return this.$store.state.initials
+    },
     date() {
       const monthNames = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"
@@ -68,12 +72,16 @@ export default {
     addComment() {
       // comments.push(comments.length + 1 (this.newMessage));
       // this.newMessage.comment = '';
-      comments.child("" + this.commentsLength + "").set({
+      const pushComments = comments.push();
+      const key = pushComments.key
+      comments.child(key).set({
         comment: this.message,
         person: this.name,
-        date: this.date
+        date: this.date,
+        initials: this.initials
       });
       this.message = '';
+      return pushComments
     }
   },
   mounted() {
@@ -87,6 +95,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#comments {
+  margin: 7% 0;
+}
 ul {
   list-style-type: none;
   padding: 0;
@@ -101,16 +112,22 @@ ul {
       margin: 0;
     }
     .user {
-      background: #ccc;
-      width: 30px;
-      height: 30px;
-      border-radius: 2px;
+      background: rgba(95,179,206,1);
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
       text-align: center;
       margin-right: 10px;
+      color: #fff;
+      font-size: 1.6rem;
+      font-weight: 400;
       i {
         margin-top: 4px;
         font-size: 1.8rem;
         color: #fff;
+      }
+      p {
+        padding-top: 5px;
       }
     }
     .message {
@@ -118,7 +135,7 @@ ul {
       .person {
         display: inline-block;
         font-size: 0.9rem;
-        color: darken(lightblue, 20%);
+        color: rgba(95,179,206,1);
         font-weight: 600;
       }
       .date {
@@ -144,7 +161,7 @@ ul {
   input[type="submit"] {
     padding: 10px 20px;
     border-radius: 5px;
-    background: darken(lightblue, 20%);
+    background: rgba(95,179,206,1);
     color: #fff;
     text-transform: uppercase;
     display: block;

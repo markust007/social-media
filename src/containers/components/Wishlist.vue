@@ -11,10 +11,10 @@
       </ul>
     </div>
 
-    <transition
+    <!-- <transition
       name="custom-classes-transition"
       enter-active-class="animated fadeIn"
-    >
+    > -->
       <div class="wishlist" v-show="!editList && showList">
         <div class="top">
           <button class="edit" @click="backtoLists"><i class="fas fa-arrow-left"></i></button>
@@ -31,16 +31,16 @@
           </li>
         </ul>
       </div>
-    </transition>
+    <!-- </transition> -->
 
     <button class="new-list" :class="{close: newList}"@click="createList" v-show="!editList && !showList"><i class="fas fa-plus"></i></button>
 
     <!-- WISHLIST NEW-->
-    <transition
+    <!-- <transition
       name="custom-classes-transition"
-      enter-active-class="animated"
+      enter-active-class="animated fadeIn"
       leave-active-class="animated fadeOut"
-    >
+    > -->
       <div class="wishlist new" v-show="newList && !editList && !showList">
         <p>Title:</p>
         <input type="text" v-model="newItems.for" class="title" />
@@ -54,13 +54,13 @@
           <button class="edit" @click="pushList"><i class="fas fa-save"></i></button>
         </div>
       </div>
-    </transition>
+    <!-- </transition> -->
 
     <!-- WISHLIST EDIT -->
-    <transition
+    <!-- <transition
       name="custom-classes-transition"
       enter-active-class="animated fadeIn"
-    >
+    > -->
       <div class="wishlist editlist" v-if="editList">
         <p>Title:</p>
         <input type="text" v-model="editItems.for" class="title" />
@@ -74,7 +74,7 @@
           <button class="edit" @click="saveEditList"><i class="fas fa-save"></i></button>
         </div>
       </div>
-    </transition>
+    <!-- </transition> -->
 
     <!-- MODAL -->
     <transition
@@ -85,8 +85,8 @@
       <div class="modal" v-show="modal">
         <div class="modal-window">
           <p>Are you sure?</p>
-          <button class="new-list" @click="yesModal">YES</button>
-          <button class="new-list" @click="noModal">NO</button>
+          <button class="modal-btn" @click="yesModal">YES</button>
+          <button class="modal-btn" @click="noModal">NO</button>
         </div>
       </div>
     </transition>
@@ -347,7 +347,7 @@ export default {
 
 <style scoped lang="scss">
 #wishlist {
-  margin: 1% 0;
+  margin: 7% 0;
 }
 .list-items {
   background: #fff;
@@ -355,7 +355,7 @@ export default {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   h3 {
-    background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.08);
     padding: 10px;
     font-size: 1.25rem;
     margin: 0;
@@ -371,8 +371,8 @@ export default {
       p {
         margin: 0;
         &.wish-for {
-          color: darken(lightblue, 20%);
-          font-weight: 600;
+          color: rgba(95,179,206,1);
+          font-weight: 700;
           font-size: 1.2rem;
         }
         &.created-by {
@@ -397,7 +397,7 @@ export default {
 .edit {
   padding: 5px;
   border-radius: 50%;
-  background: darken(lightblue, 20%);
+  background: rgba(95,179,206,1);
   color: #fff;
   font-size: 1rem;
   width: 25px;
@@ -412,7 +412,7 @@ export default {
 .new-list {
   padding: 5px;
   border-radius: 50%;
-  background: darken(lightblue, 20%);
+  background: rgba(95,179,206,1);
   color: #fff;
   font-size: 1.8rem;
   width: 45px;
@@ -443,7 +443,7 @@ export default {
   border: 1px solid #ccc;
   border-radius: 4px;
   .top {
-    background: rgba(0,0,0,0.1);
+    background: rgba(0,0,0,0.08);
     padding: 10px;
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
@@ -452,8 +452,8 @@ export default {
     }
     .title {
       margin: 5px 0;
-      color: darken(lightblue, 20%);
-      font-weight: 600;
+      color: rgba(95,179,206,1);
+      font-weight: 700;
       font-size: 1.5rem;
     }
   }
@@ -482,8 +482,8 @@ export default {
         text-transform: uppercase;
         text-align: center;
         &.strike {
-          background: darken(lightblue, 20%);
-          border: 1px solid darken(lightblue, 20%);
+          background: rgba(95,179,206,1);
+          border: 1px solid rgba(95,179,206,1);
         }
       }
       p {
@@ -511,10 +511,10 @@ export default {
     }
     .title {
       display: block;
-      color: darken(lightblue, 20%);
+      color: rgba(95,179,206,1);
       font-weight: 600;
       font-size: 1.5rem;
-      border-bottom: 1px solid darken(lightblue, 20%);
+      border-bottom: 1px solid rgba(95,179,206,1);
     }
     input {
       display: block;
@@ -533,22 +533,39 @@ export default {
 }
 .modal {
   position: absolute;
-  background: rgba(0,0,0,0.7);
+  background: transparentize(#eeeeee, 0.4);
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
   .modal-window {
     background: #fff;
-    width: 400px;
-    height: 250px;
+    width: 350px;
+    height: 200px;
     display: block;
     margin: 0 auto;
-    margin-top: 40%;
+    margin-top: 5%;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0.16),0px 2px 5px 0px rgba(0, 0, 0, 0.26);
     p {
       margin: 0;
-      padding-top: 10%;
+      padding-top: 12%;
       text-align: center;
+      font-size: 2rem;
+      color: #666;
+    }
+    button {
+      padding: 10px 20px;
+      border-radius: 5px;
+      background: rgba(95,179,206,1);
+      color: #fff;
+      text-transform: uppercase;
+      display: inline-block;
+      margin: 20px 8px;
+      font-size: 1.25rem;
+      width: 75px;
     }
   }
 }

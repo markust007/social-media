@@ -5,26 +5,23 @@
       <button class="tab" :class="{selected: !sign}" @click="sign = false">Sign Up</button>
     </div>
     <div class="sign in" v-show="sign">
-      <p>Sign In</p>
+      <p class="head">Sign In</p>
       <form>
-        <p>Email:</p>
-        <input type="email" v-model="email" required />
-        <p>Password:</p>
-        <input type="text" v-model="password" required />
-        <input type="submit" value="Sign In" @click.prevent="toggleSignIn">
+        <input type="email" v-model="email" placeholder="EMAIL" required />
+        <input :type="pass ? 'password' : 'text'" v-model="password" placeholder="PASSWORD" required />
+        <input type="submit" value="GO!" @click.prevent="toggleSignIn">
+        <button @click.prevent="pass = !pass"><i class="fas fa-eye" v-if="pass"></i><i class="fas fa-eye-slash" v-else></i></button>
       </form>
     </div>
 
     <div class="sign up" v-show="!sign">
-      <p>Sign Up</p>
+      <p class="head">Sign Up</p>
       <form>
-        <p>Email:</p>
-        <input type="email" v-model="email" required />
-        <p>Password:</p>
-        <input type="text" v-model="password" required />
-        <p>Your Name:</p>
-        <input type="text" v-model="name" required />
-        <input type="submit" value="Sign Up" @click.prevent="handleSignUp">
+        <input type="email" v-model="email" placeholder="EMAIL" required />
+        <input :type="pass ? 'password' : 'text'" v-model="password" placeholder="PASSWORD" required />
+        <input type="text" v-model="name" placeholder="YOUR NAME" required />
+        <input type="submit" value="GO!" @click.prevent="handleSignUp">
+        <button @click.prevent="pass = !pass"><i class="fas fa-eye" v-if="pass"></i><i class="fas fa-eye-slash" v-else></i></button>
       </form>
     </div>
   </section>
@@ -40,7 +37,8 @@ export default {
       sign: true,
       email: "",
       password: "",
-      name: ""
+      name: "",
+      pass: true
     };
   },
 
@@ -81,13 +79,14 @@ export default {
         let $index = this.storeEmail.indexOf("@")
         let $name = this.storeEmail.slice(0, $index);
         let docRef = fs.collection("users").doc("" + $name + "");
-        docRef.get().then(function(doc) {
+        docRef.get().then((doc) => {
             if (doc.exists) {
                 self.$store.commit('updateName', doc.data().name)
+                this.getInitials(doc.data().name);
             } else {
                 console.log("No such document!");
             }
-        }).catch(function(error) {
+        }).catch((error) => {
             console.log("Error getting document:", error);
         });
       }, 150);
@@ -108,11 +107,11 @@ export default {
     currentUser() {
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          alert(user.email)
           this.$emit('signedIn');
           this.$store.commit("updateName", user.displayName);
           this.$store.commit("updateEmail", user.email);
           this.getUser();
+          // this.getInitials(user.displayName);
           // var displayName = user.displayName;
           // var email = user.email;
           // var emailVerified = user.emailVerified;
@@ -189,11 +188,11 @@ export default {
       // [START createwithemail]
       firebase.auth().createUserWithEmailAndPassword($email, $password)
       .then(() => {
-        alert('new user!'),
+        // alert('new user!'),
         this.$store.commit('updateName', self.name),
         this.addUser();
       })
-      .catch(function(error) {
+      .catch((error) => {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
@@ -216,7 +215,7 @@ export default {
         // [START_EXCLUDE]
         alert('Email Verification Sent!');
         // [END_EXCLUDE]
-      }).catch(function(error) {
+      }).catch((error) => {
           console.log(error);
       });
       // [END sendemailverification]
@@ -244,6 +243,12 @@ export default {
         // [END_EXCLUDE]
       });
       // [END sendpasswordemail];
+    },
+    getInitials(name) {
+      const space = name.indexOf(" ")
+      const first = name[0].toUpperCase();
+      const last = name[space + 1].toUpperCase();
+      !last ? this.$store.commit("updateInitials", first) : this.$store.commit("updateInitials", first + last)
     }
   },
   mounted() {
@@ -258,48 +263,76 @@ export default {
 </script>
 
 <style scoped lang="scss">
+#auth {
+  max-width: 450px;
+  margin: 15% auto 0;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
 .tabs {
   width: 100%;
-  background: #666;
-  border-top: 1px solid #555;
-  border-left: 1px solid #555;
-  border-right: 1px solid #555;
-  margin-top: 10px;
+  background: rgba(95,179,206,1);
+  border-top-left-radius: 4px;
 }
 .tabs .tab {
-  /* background: #666; */
   color: #fff;
   padding: 8px;
   cursor: pointer;
+  &:first-child {
+    border-top-left-radius: 4px;
+  }
 }
 .tabs .tab.selected {
-  background: #e6e7e8;
-  color: #000;
+  background: #fff;
+  color: rgba(95,179,206,1);
   cursor: default;
 }
 .sign {
   padding: 10px;
-  border-bottom: 1px solid #555;
-  border-left: 1px solid #555;
-  border-right: 1px solid #555;
-}
-input[type="text"] {
   background: #fff;
-  width: 100%;
-  padding: 10px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  .head {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 200;
+    color: #999;
+    margin: 5px;
+  }
+  form {
+    position: relative;
+    button {
+      position: absolute;
+      top: 94px;
+      right: 10px;
+      font-size: 1.25rem;
+      color: rgba(95,179,206,1);
+    }
+  }
 }
-input[type="email"] {
+input[type="email"], input[type="text"], input[type="password"] {
+  font-size: 1.25rem;
   background: #fff;
-  width: 100%;
-  padding: 10px;
+  width: 94%;
+  padding: 5px;
+  border-bottom: 1px solid rgba(95,179,206,1);
+  margin: 20px 8px;
+  &:focus {
+    outline: none;
+  }
+  &::placeholder {
+    color: #ccc;
+  }
 }
 input[type="submit"] {
+  color: #fff;
   padding: 10px 20px;
   border-radius: 5px;
-  background: lightblue;
+  background: rgba(95,179,206,1);
   text-transform: uppercase;
   display: block;
-  margin: 10px auto 0;
+  margin: 10px auto 15px;
   font-size: 1.1rem;
+  cursor: pointer;
 }
 </style>

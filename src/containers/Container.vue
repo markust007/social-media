@@ -2,16 +2,25 @@
   <section id="container">
 
     <Auth :comments="comments" @signedIn="signedIn = true" v-show="!signedIn"></Auth>
-    <Comment :comments="comments" v-show="signedIn"></Comment>
-    <Wish :wishlist="wishlist"></Wish>
+    <!-- <Comment :comments="comments" v-show="signedIn"></Comment>
+    <Wish :wishlist="wishlist"></Wish> -->
+    <Topbar v-show="signedIn"></Topbar>
+    <transition
+      name="custom-classes-transition"
+      enter-active-class="animated fadeIn"
+      leave-active-class="animated fadeOut"
+    >
+      <router-view v-show="signedIn" :comments="comments" :wishlist="wishlist" :key="this.$route.path"></router-view>
+    </transition>
 
   </section>
 </template>
 
 <script>
 import Auth from './components/Auth.vue'
-import Comment from './components/Comments.vue'
-import Wish from './components/Wishlist.vue'
+import Topbar from './components/Topbar.vue'
+// import Comment from './components/Comments.vue'
+// import Wish from './components/Wishlist.vue'
 
 import firebase from 'firebase'
 import 'Firebase/firestore'
@@ -50,7 +59,7 @@ import date from '../util/date'
             // console.log(`${doc.id} => ${doc.data()}`);
             console.log(doc.data());
         });
-      }).catch(function(error) {
+      }).catch((error) => {
           console.log("Error getting document:", error);
       });
       // USE BELOW FOR USER WITH AUTO GENERATED DOCUMENT
@@ -68,7 +77,8 @@ import date from '../util/date'
       console.log(this.date)
     },
     components: {
-      Auth, Comment, Wish
+      Auth, Topbar
+      // Comment, Wish
     },
     props: []
   }

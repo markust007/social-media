@@ -8,7 +8,8 @@ const store = new Vuex.Store({
     userName: "",
     menu: true,
     email: "",
-    name: ""
+    name: "",
+    initials: ""
   },
   actions: {
 
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
     },
     updateName (state, value) {
       state.name = value;
+    },
+    updateInitials (state, value) {
+      state.initials = value;
     },
     changeUserName (state, value) {
       state.userName = value;
