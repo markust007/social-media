@@ -273,6 +273,7 @@ export default {
   width: 100%;
   background: rgba(95,179,206,1);
   border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
 }
 .tabs .tab {
   color: #fff;
