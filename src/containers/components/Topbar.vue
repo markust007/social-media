@@ -52,6 +52,7 @@ header {
   left: 0;
   height: 35px;
   background: rgba(95,179,206,1);
+  z-index: 99;
 }
 ul {
   list-style-type: none;

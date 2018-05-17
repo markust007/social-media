@@ -61,6 +61,7 @@ nav {
     border-radius: 4px;
     border: 1px solid #ddd;
     text-align: center;
+    text-decoration: none;
     &:-webkit-any-link {
       text-decoration: none;
     }
